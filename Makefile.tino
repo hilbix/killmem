@@ -22,9 +22,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # $Log$
-# Revision 1.1  2006-10-21 02:06:23  tino
-# 
+# Revision 1.2  2006-10-21 02:16:56  tino
+# Correction: ^Z and GPL removed
 #
+# Revision 1.1  2006/10/21 02:06:23  tino
 
       PROGS=killmem
    DISTMAKE=killmem.static

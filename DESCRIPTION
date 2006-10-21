@@ -2,9 +2,10 @@ Protect some memory against paging until you need free memory
 # $Header$
 #
 # $Log$
-# Revision 1.1  2006-10-21 02:06:23  tino
-# 
+# Revision 1.2  2006-10-21 02:16:56  tino
+# Correction: ^Z and GPL removed
 #
+# Revision 1.1  2006/10/21 02:06:23  tino
 
 This applications pins some memory, such that it cannot be paged out.
 If you need this memory you can free it such that you can perform some
