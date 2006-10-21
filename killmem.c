@@ -8,7 +8,10 @@
  * Public Domain as long as Copyright is retained.
  * Use at own risk, no warranty!
  *
- * $log$
+ * $Log$
+ * Revision 1.2  2006-10-21 02:07:02  tino
+ * CVS comment corrected
+ *
  */
 #include <stdio.h>
 #include <stdlib.h>
