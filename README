@@ -1,0 +1,16 @@
+$Header$
+
+See DESCRIPTION
+
+How to make:
+	make
+
+With tinolib installed properly you can do
+	make static
+
+The latter creates an executable below 10 KB.
+
+$Log$
+Revision 1.1  2006-10-21 02:06:23  tino
+
+

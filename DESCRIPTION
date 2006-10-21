@@ -1,0 +1,46 @@
+Protect some memory against paging until you need free memory
+# $Header$
+#
+# $Log$
+# Revision 1.1  2006-10-21 02:06:23  tino
+# 
+#
+
+This applications pins some memory, such that it cannot be paged out.
+If you need this memory you can free it such that you can perform some
+system tasks to get the machine back to normal operation more quickly.
+
+<b>Note that killmem must be run as root in order to be able to lock
+memory.</b>
+
+I have a funny problem here.  The machine has enough RAM for normal operation,
+but somtimes some nasty applications make the machine into heavy thrashing,
+such that everything goes slow-motion and even slower.
+
+Neither nice nor slowdown can help, as paging is done by the system
+and not application controlled.  So each time a page becomes filled it
+is nearly immediately thrashed out again into paging space because
+those applications do heavy RAM walking over gigabytes of memory.
+
+One thing would be to add 3*number_of_nasty_applications GB of RAM into
+the machine so that these applications can all have their process memory
+maxed out.  But the machine already is maxed out at 640 MB total RAM
+(it was a huge amount some years ago).
+
+However it's easy to protect against this.  With killmem you can lock 10%
+of the memory against paging, and with a press of a button you can free
+it again.  This means for some seconds the machine has free ram to
+do maintainance tasks, such like sending a 'killall app' to the heavy
+applications. <b>Don't be too slow as in such situations the free memory
+fills up in seconds!</b>
+
+And beware.  If the machine already is on the edge, starting killmem
+makes the situation worse.  It might even make your kernel go nuts,
+which happened several times. <b>You have been warned.</b>
+
+Note that there are some other tools out there which have similiar
+goals:
+<ul>
+<li> <a href="http://freshmeat.net/projects/fallback-reboot/">Fallback Reboot</a> locks it's memory</li>
+<li> <a href="http://freshmeat.net/search/?q=sash">Standalone Shell</a> statically linked</li>
+</ul>
