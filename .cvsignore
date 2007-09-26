@@ -3,3 +3,4 @@ Makefile.md5
 *.d
 killmem
 killmem_version.h
+tino_sbrk.h
