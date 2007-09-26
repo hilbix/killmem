@@ -1,6 +1,1 @@
-Killmem now is placed under the Copyright Less License (CLL).
-Basically this is PD as before with the copyright removed, as
-due to the CLL nobody is permitted to add a copyright again!
-
-This version is based on sbrk() library call and not malloc
-any more.
+Out of memory situation now is handled without SIGSEV.

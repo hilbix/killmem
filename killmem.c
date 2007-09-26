@@ -8,7 +8,10 @@
  * see file COPYRIGHT.CLL.  USE AT OWN RISK, ABSOLUTELY NO WARRANTY.
  *
  * $Log$
- * Revision 1.3  2007-09-26 12:38:07  tino
+ * Revision 1.4  2007-09-26 13:24:02  tino
+ * sbrk usage fixed.  As sbrk() isn't POSIX implementation seem to vary ..
+ *
+ * Revision 1.3  2007/09/26 12:38:07  tino
  * CLL + sbrk
  *
  * Revision 1.2  2006/10/21 02:07:02  tino
@@ -20,6 +23,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/mman.h>
+
+#include "tino_sbrk.h"
 
 #include "killmem_version.h"
 
@@ -135,21 +140,22 @@ mem_get(int mem)
   int	d;
   char	*p;
 
-  d	= 0;
-  p	= sbrk(d);
+  p	= tino_sbrk(0);
   d	= p-(char *)0;
   if (d&(MEM_PAGESIZE-1))
     {
       o("align");
       sbrk(MEM_PAGESIZE-(d&(MEM_PAGESIZE-1)));
-      p	= sbrk(d);
+      p	= tino_sbrk(d);
+      if (!p)
+	return p;
       d	= p-(char *)0;
       if (d&(MEM_PAGESIZE-1))
 	o(" failed");
       o(" .. ");
     }
   o("sbrk");
-  return sbrk(mem);
+  return tino_sbrk(mem);
 #else
   o("alloc");
   return malloc(mem);

@@ -1,3 +1,8 @@
+2007-09-26    <tino@firebird.03.softkill.net>
+
+	* killmem.c (mem_get): sbrk returns -1 (really!) if it cannot set
+	the brk.  This now is cought, too.
+
 2006-10-21    <tino@firebird.03.softkill.net>
 
 	* COPYING re-added as my lib wants one

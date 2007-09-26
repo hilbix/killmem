@@ -23,7 +23,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # $Log$
-# Revision 1.3  2007-09-26 12:38:07  tino
+# Revision 1.4  2007-09-26 13:24:02  tino
+# sbrk usage fixed.  As sbrk() isn't POSIX implementation seem to vary ..
+#
+# Revision 1.3  2007/09/26 12:38:07  tino
 # CLL + sbrk
 #
 # Revision 1.2  2006/10/21 02:16:56  tino
@@ -55,7 +58,7 @@ ADD_LDFLAGS=
       CLEAN=
   CLEANDIRS=
   DISTCLEAN=
-   TINOCOPY=
+   TINOCOPY=tino/sbrk.h
 #    TINOINC=tino_common.h
 #    TINOLIB=tino/lib.h
 #INSTALLPATH=/usr/local
