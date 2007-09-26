@@ -10,8 +10,12 @@ With tinolib installed properly you can do
 
 The latter creates an executable below 10 KB.
 
-$Log$
-Revision 1.2  2006-10-21 02:16:56  tino
-Correction: ^Z and GPL removed
+This Works is placed under the terms of the Copyright Less License,
+see file COPYRIGHT.CLL.  USE AT OWN RISK, ABSOLUTELY NO WARRANTY. 
 
-Revision 1.1  2006/10/21 02:06:23  tino
+$Log$
+Revision 1.3  2007-09-26 12:38:07  tino
+CLL + sbrk
+
+Revision 1.2  2006/10/21 02:16:56  tino
+Correction: ^Z and GPL removed

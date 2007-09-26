@@ -4,14 +4,15 @@
  *
  * Locks memory until you press a key.  Runs as root.
  *
- * Copyright (C)2006 by Valentin Hilbig
- * Public Domain as long as Copyright is retained.
- * Use at own risk, no warranty!
+ * This Works is placed under the terms of the Copyright Less License,
+ * see file COPYRIGHT.CLL.  USE AT OWN RISK, ABSOLUTELY NO WARRANTY.
  *
  * $Log$
- * Revision 1.2  2006-10-21 02:07:02  tino
- * CVS comment corrected
+ * Revision 1.3  2007-09-26 12:38:07  tino
+ * CLL + sbrk
  *
+ * Revision 1.2  2006/10/21 02:07:02  tino
+ * CVS comment corrected
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,17 +23,21 @@
 
 #include "killmem_version.h"
 
-/* basically to spare some mempory
+#define	USE_SBRK
+
+/* little routines to spare some memory
  */
 
 static void
 on(const char *s, int fd)
 {
-  int	i;
+  int	e, i;
 
+  e	= errno;
   for (i=0; s[i]; i++);
   if (i)
     write(fd, s, i);
+  errno	= e;
 }
 
 static void
@@ -68,13 +73,10 @@ o2(const char *s)
 static void
 err(const char *s)
 {
-  int	e;
-
-  e	= errno;
   o2("error: ");
   o2(s);
   o2(": ");
-  o2(strerror(e));
+  o2(strerror(errno));
   o2("\n");
 }
 
@@ -83,6 +85,75 @@ ex(const char *s)
 {
   err(s);
   exit(1);
+}
+
+/* Lock memory
+ *
+ * Returns 1 when there is a problem.
+ */
+static int
+mem_lock(char *p, int mem)
+{
+  while (mlock(p, mem))
+    {
+      int	d;
+
+      /* Getting ENOMEM means, that the memory area is too big.
+       */
+      if (errno!=ENOMEM)
+	return 1;
+
+      /* Half the size and try again.
+       */
+      d	= (mem>>13)<<12;
+      if (!d)
+	return 1;
+
+      if (mem_lock(p, d))
+	return 1;
+
+      /* Show this situation
+       */
+      o("o");
+
+      /* Now try the other half
+       */
+      p		+= d;
+      mem	-= d;
+    }
+  return 0;
+}
+
+#define	MEM_PAGESIZE	4096
+
+/* Allocate memory
+ */
+static void *
+mem_get(int mem)
+{
+#ifdef USE_SBRK
+  int	d;
+  char	*p;
+
+  d	= 0;
+  p	= sbrk(d);
+  d	= p-(char *)0;
+  if (d&(MEM_PAGESIZE-1))
+    {
+      o("align");
+      sbrk(MEM_PAGESIZE-(d&(MEM_PAGESIZE-1)));
+      p	= sbrk(d);
+      d	= p-(char *)0;
+      if (d&(MEM_PAGESIZE-1))
+	o(" failed");
+      o(" .. ");
+    }
+  o("sbrk");
+  return sbrk(mem);
+#else
+  o("alloc");
+  return malloc(mem);
+#endif
 }
 
 int
@@ -104,31 +175,52 @@ main(int argc, char **argv)
   if (mem<=0)
     ex("funny arg");
 
-  o("alloc .. ");
-  p	= malloc(mem);
+  /* Get the memory
+   */
+  p	= mem_get(mem);
   if (!p)
-    ex("malloc");
+    {
+      o(" failed\r\n");
+      ex("no memory");
+    }
 
-  o("locking .. ");
+  /* Lock the memory
+   */
+  o(" .. lock ");
+  nolock	= mem_lock(p, mem);
+  if (nolock)
+    {
+      o("failed\r\n");
+      err("mlock");
+    }
+  o(".. ");
 
-  if ((nolock=mlock(p, mem))!=0)
-    err("not running as root? memlock failed");
-
-  for (i=0; i<mem; i+=4096)
+  /* Initialize the memory, so it is paged into memory
+   */
+  for (i=0; i<mem; i+=MEM_PAGESIZE)
     {
       if ((i&0xfffff)==0)
         {
 	  oint5(i>>20);
 	  o("\b\b\b\b\b");
         }
-      p[i]	= 1;
+      p[i]	= i;
     }
-  if (!nolock)
-    {
-      o("press key to continue: ");
-      read(1, &c, 1);
-      munlock(p, mem);
-      free(p);
-    }
+
+  /* When locking did not work return immediately as we would only hog
+   * the swapspace.
+   */
+  if (nolock)
+    return 3;
+
+  /* Wait for a keypress
+   */
+  o("press key to continue: ");
+  read(1, &c, 1);
+
+  /* Before I unlocked the memory.  However this might trigger
+   * swapping.  So now killmem just terminates and thus tears down the
+   * lock.
+   */
   return 0;
 }

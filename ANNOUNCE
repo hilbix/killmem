@@ -1,4 +1,6 @@
-GPL file removed, it's irritating for a PD program.
+Killmem now is placed under the Copyright Less License (CLL).
+Basically this is PD as before with the copyright removed, as
+due to the CLL nobody is permitted to add a copyright again!
 
-Also the CTRL-Z (dunno how I got that) as comment isn't clever,
-as DOS based systems might see this as file-end.
+This version is based on sbrk() library call and not malloc
+any more.
