@@ -1,1 +1,1 @@
-Out of memory situation now is handled without SIGSEV.
+Second arg to skip wait for keypress

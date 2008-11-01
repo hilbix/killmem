@@ -23,6 +23,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 # $Log$
+# Revision 1.5  2008-11-01 09:42:59  tino
+# Suppress need for keypress via 2nd arg
+#
 # Revision 1.4  2007-09-26 13:24:02  tino
 # sbrk usage fixed.  As sbrk() isn't POSIX implementation seem to vary ..
 #
@@ -61,7 +64,7 @@ ADD_LDFLAGS=
    TINOCOPY=tino/sbrk.h
 #    TINOINC=tino_common.h
 #    TINOLIB=tino/lib.h
-#INSTALLPATH=/usr/local
+ INSTALLPATH=/usr/local
 # DBG_CFLAGS=
 #DBG_LDFLAGS=
 # DBG_LDLIBS=-lefence

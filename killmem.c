@@ -8,6 +8,9 @@
  * see file COPYRIGHT.CLL.  USE AT OWN RISK, ABSOLUTELY NO WARRANTY.
  *
  * $Log$
+ * Revision 1.5  2008-11-01 09:42:59  tino
+ * Suppress need for keypress via 2nd arg
+ *
  * Revision 1.4  2007-09-26 13:24:02  tino
  * sbrk usage fixed.  As sbrk() isn't POSIX implementation seem to vary ..
  *
@@ -168,11 +171,12 @@ main(int argc, char **argv)
   int	mem, i, nolock;
   char	*p, c;
 
-  if (argc!=2)
+  if (argc<2 || argc>3)
     {
-      o2("Usage: killmem MB\n"
+      o2("Usage: killmem MB [x]\n"
 	 "\t\tVersion " KILLMEM_VERSION " compiled " __DATE__ "\n"
-	 "\tRun as root to lock memory against paging\n"
+	 "\tRun as root to lock memory against paging.\n"
+	 "\tAfterwards it waits for enter key if there is no second arg.\n"
 	 "\texample: killmem 64\n");
       return 2;
     }
@@ -217,7 +221,18 @@ main(int argc, char **argv)
    * the swapspace.
    */
   if (nolock)
-    return 3;
+    {
+      o("errstop\r\n");
+      return 3;
+    }
+
+  /* When there is a 2nd arg, return immediately (this is success)
+   */
+  if (argc>2)
+    {
+      o("ok   \r\n");
+      return 0;
+    }
 
   /* Wait for a keypress
    */

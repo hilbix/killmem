@@ -1,3 +1,9 @@
+2008-11-01  Valentin Hilbig  <tino@zoo.03.softkill.net>
+
+	* Makefile.tino (INSTALLPATH): now installs into /usr/local/bin
+
+	* killmem.c (main): 2nd arg to overcome keypress
+
 2007-09-26    <tino@firebird.03.softkill.net>
 
 	* killmem.c (mem_get): sbrk returns -1 (really!) if it cannot set
