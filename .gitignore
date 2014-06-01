@@ -1,0 +1,5 @@
+*.d
+*.o
+*~
+killmem
+killmem_version.h
