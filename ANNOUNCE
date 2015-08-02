@@ -1,1 +1,2 @@
-Second arg to skip wait for keypress
+Announcements are now in the git commit log:
+git log --follow VERSION

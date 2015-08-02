@@ -31,6 +31,8 @@
 
 #include "killmem_version.h"
 
+void inline IGUR() {}  /* Ignore GCC Unused Result */
+
 #define	USE_SBRK
 
 /* little routines to spare some memory
@@ -44,7 +46,7 @@ on(const char *s, int fd)
   e	= errno;
   for (i=0; s[i]; i++);
   if (i)
-    write(fd, s, i);
+    IGUR(write(fd, s, i));
   errno	= e;
 }
 
@@ -100,11 +102,11 @@ ex(const char *s)
  * Returns 1 when there is a problem.
  */
 static int
-mem_lock(char *p, int mem)
+mem_lock(char *p, long mem)
 {
   while (mlock(p, mem))
     {
-      int	d;
+      long	d;
 
       /* Getting ENOMEM means, that the memory area is too big.
        */
@@ -137,10 +139,10 @@ mem_lock(char *p, int mem)
 /* Allocate memory
  */
 static void *
-mem_get(int mem)
+mem_get(long mem)
 {
 #ifdef USE_SBRK
-  int	d;
+  long	d;
   char	*p;
 
   p	= tino_sbrk(0);
@@ -168,7 +170,8 @@ mem_get(int mem)
 int
 main(int argc, char **argv)
 {
-  int	mem, i, nolock;
+  long	mem, i;
+  int nolock;
   char	*p, c;
 
   if (argc<2 || argc>3)
@@ -181,7 +184,7 @@ main(int argc, char **argv)
       return 2;
     }
 
-  mem	= atoi(argv[1])*1024*1024;
+  mem	= atol(argv[1])*1024l*1024l;
   if (mem<=0)
     ex("funny arg");
 
@@ -209,7 +212,7 @@ main(int argc, char **argv)
    */
   for (i=0; i<mem; i+=MEM_PAGESIZE)
     {
-      if ((i&0xfffff)==0)
+      if ((i&0xfffffl)==0)
         {
 	  oint5(i>>20);
 	  o("\b\b\b\b\b");
@@ -237,7 +240,7 @@ main(int argc, char **argv)
   /* Wait for a keypress
    */
   o("press key to continue: ");
-  read(1, &c, 1);
+  IGUR(read(1, &c, 1));
 
   /* Before I unlocked the memory.  However this might trigger
    * swapping.  So now killmem just terminates and thus tears down the
