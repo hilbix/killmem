@@ -1,7 +1,7 @@
 # Makefile automatically generated, do not edit!
 # This output (only this Makefile) is Public Domain.
 #
-#@MD5TINOIGN@ Creation date: Sun Jun  1 21:07:10 CEST 2014
+#@MD5TINOIGN@ Creation date: Thu Nov 10 15:21:53 CET 2016
 #
 # This file is based on following files:
 #@MD5TINOIGN@ 1: Makefile.tino
@@ -42,8 +42,8 @@ ADD_LDFLAGS=
       PROG1=killmem
 
 # Override those in Makefile.tino if needed:
- STD_CFLAGS=-g -Wall -Wno-unused-function -O3
- STD_CCFLAGS=-g -Wall -Wno-unused-function -O3
+ STD_CFLAGS=-g -Wall -Wno-unused-function -O3 -Wno-error=unused-value
+ STD_CCFLAGS=-g -Wall -Wno-unused-function -O3 -Wno-error=unused-value
 STD_LDFLAGS=
  STD_LDLIBS=
     BINPATH=bin
@@ -58,10 +58,10 @@ STD_LDFLAGS=
 # Except for the compiler generated dependencies at the end
 # from here no changes shall be needed.
 
-     CFLAGS=$(DBG_FLAGS) $(DBG_CFLAGS) $(ADD_CFLAGS) $(STD_CFLAGS) -I"$(HERE)"
-   CXXFLAGS=$(DBG_CCFLAGS) $(ADD_CCFLAGS) $(STD_CCFLAGS) -I"$(HERE)"
-    LDFLAGS=$(DBG_LDFLAGS) $(ADD_LDFLAGS) $(STD_LDFLAGS)
-     LDLIBS=$(DBG_LDLIBS) $(ADD_LDLIBS) $(STD_LDLIBS)
+     CFLAGS=$(DBG_FLAGS) $(DBG_CFLAGS) $(STD_CFLAGS) $(ADD_CFLAGS) -I"$(HERE)"
+   CXXFLAGS=$(DBG_CCFLAGS) $(STD_CCFLAGS) $(ADD_CCFLAGS) -I"$(HERE)"
+    LDFLAGS=$(DBG_LDFLAGS) $(STD_LDFLAGS) $(ADD_LDFLAGS)
+     LDLIBS=$(DBG_LDLIBS) $(STD_LDLIBS) $(ADD_LDLIBS)
 
 VERSIONFILE=$(PROG1)_version
 VERSIONNAME=$(VERSIONFILE)
